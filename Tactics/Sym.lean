@@ -61,7 +61,7 @@ def sym_one (curr_state_number : Nat) : Lean.Elab.Tactic.TacticM Unit :=
           -- (try clear $h_step_n:ident)
           exec_inst $h_step_n':ident $h_st_prefix:str
           intro_fetch_decode_lemmas $h_step_n':ident $h_st_program:ident $h_st_prefix:str
-          (try clear $h_st_pc:ident $h_st_program:ident $h_st_err:ident)
+          -- (try clear $h_st_pc:ident $h_st_program:ident $h_st_err:ident)
           -- intro_change_hyps $h_step_n':ident $h_st_prefix:str
           -- (try clear $h_step_n':ident)
       )))

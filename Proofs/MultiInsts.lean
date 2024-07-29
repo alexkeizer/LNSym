@@ -32,13 +32,12 @@ theorem small_asm_snippet_sym_experiment_1 (s0 s_final : ArmState)
   -- Final Steps
   unfold run at h_run
   subst s_final
-  simp_all (config := {decide := true}) only [@zeroExtend_eq 128, state_simp_rules, minimal_theory, bitvec_rules]  
+  simp_all (config := {decide := true}) only [@zeroExtend_eq 128, state_simp_rules, minimal_theory, bitvec_rules]
   done
 
-/-
 -- set_option profiler true in
 -- set_option profiler.threshold 10 in
-theorem small_asm_snippet_sym_experiment_1 (s0 s_final : ArmState)
+theorem small_asm_snippet_sym_experiment_2 (s0 s_final : ArmState)
   (h_s0_pc : read_pc s0 = 0x12650c#64)
   (h_s0_program : s0.program = test_program)
   (h_s0_err : read_err s0 = StateError.None)
@@ -49,7 +48,11 @@ theorem small_asm_snippet_sym_experiment_1 (s0 s_final : ArmState)
   simp_all only [state_simp_rules, -h_run]
   -- Symbolic Simulation
   sym_i_n 0 4
-  have h_s4_unchanged_final :
+  intro_change_hyps h_step_1 h_s1_program "h_s0"
+  intro_change_hyps h_step_2 h_s2_program "h_s1"
+  intro_change_hyps h_step_3 h_s3_program "h_s2"
+  intro_change_hyps h_step_4 h_s4_program "h_s3"
+  have _h_s4_unchanged_final :
     ∀ (f : StateField), f ≠ StateField.PC ∧
                         f ≠ StateField.SFP 29#5 ∧
                         f ≠ StateField.SFP 28#5 ∧
@@ -80,6 +83,5 @@ theorem small_asm_snippet_sym_experiment_1 (s0 s_final : ArmState)
   subst s_final
   simp only [@zeroExtend_eq 128, h_s4_err, h_s4_changed_final, minimal_theory]
   done
--/
 
 end multi_insts_proofs
