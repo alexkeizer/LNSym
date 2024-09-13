@@ -13,7 +13,7 @@ Time the elaboration of a command, and print the result (in milliseconds).
 -/
 
 section
-open Lean Elab Command
+open Lean Elab Command Tactic
 
 /--
 Time the elaboration of a command, and print the result (in milliseconds).
@@ -30,4 +30,11 @@ elab "#time " cmd:many1Indent(command) : command => do
     elabCommand stx
   logInfo m!"time: {(← IO.monoMsNow) - start}ms"
 
+/--
+Time the elaboration of a tactic, and print the result (in milliseconds).
+-/
+elab "time " tct:tactic : tactic => do
+  let start ← IO.monoMsNow
+  evalTactic tct
+  logInfo m!"time: {(← IO.monoMsNow) - start}ms  ({← heartbeatsPercent}% of heartbeats)"
 end
